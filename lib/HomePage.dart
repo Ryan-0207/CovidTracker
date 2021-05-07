@@ -43,7 +43,7 @@ class _homepageState extends State<homepage> {
                             Color(0xFF11249F),
                           ]),
                       image: DecorationImage(
-                          image: AssetImage("assets/person.png"))),
+                          image: AssetImage("assets/virus.png"))),
                 ),
               )
             ],
