@@ -1,4 +1,3 @@
-import 'package:covid_tracker/HomePage.dart';
 import 'package:flutter/material.dart';
 
 import 'HomePage.dart';
