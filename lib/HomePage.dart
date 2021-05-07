@@ -1,15 +1,37 @@
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
-
+class homepage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _homepageState createState() => _homepageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _homepageState extends State<homepage> {
   @override
   Widget build(BuildContext context) {
-    return Container(child: Text('Heloo My name is Covid '));
+    return Scaffold(
+        appBar: AppBar(
+          centerTitle: false,
+          title: Text("Covid-19 Tracker"),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                height: 350,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [
+                          Color(0xFF3383CD),
+                          Color(0xFF11249F),
+                        ]),
+                    image:
+                        DecorationImage(image: AssetImage("assets/covid.jpg"))),
+              )
+            ],
+          ),
+        ));
   }
 }
