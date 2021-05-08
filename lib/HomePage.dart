@@ -81,7 +81,7 @@ class _homepageState extends State<homepage> {
                   ),
                 ),
               ),
-              SizedBox(height: 15),
+              SizedBox(height: 30),
               Container(
                   child: Column(children: [
                 Text("INDIA",
@@ -95,8 +95,8 @@ class _homepageState extends State<homepage> {
                   children: <Widget>[
                     StatusPanel(
                       title: 'CONFIRMED',
-                      panelColor: Colors.red[100],
-                      textColor: Colors.red,
+                      panelColor: Colors.grey[400],
+                      textColor: Colors.grey[900],
                       count: '100',
                     ),
                     StatusPanel(
@@ -113,8 +113,8 @@ class _homepageState extends State<homepage> {
                     ),
                     StatusPanel(
                       title: 'DEATHS',
-                      panelColor: Colors.grey[400],
-                      textColor: Colors.grey[900],
+                      panelColor: Colors.red[100],
+                      textColor: Colors.red,
                       count: '10',
                     ),
                   ],
@@ -162,29 +162,32 @@ class StatusPanel extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(decoration: BoxDecoration(
-                      border: Border.all(width: 2, color: Colors.black),
-                      borderRadius: BorderRadius.circular(20)),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(width: 2, color: Colors.black),
+          borderRadius: BorderRadius.circular(20),
+          color: panelColor,
+        ),
         margin: EdgeInsets.all(5),
         height: 80,
         width: width / 2,
-        color: panelColor,
         child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text(
-        title,
-        style: TextStyle(
-      fontWeight: FontWeight.bold, fontSize: 16, color: textColor),
-        ),SizedBox(height:10),
-        Text(
-        count,
-        style: TextStyle(
-      fontSize: 16, fontWeight: FontWeight.bold, color: textColor),
-        )
-      ],
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              title,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, fontSize: 16, color: textColor),
+            ),
+            SizedBox(height: 10),
+            Text(
+              count,
+              style: TextStyle(
+                  fontSize: 16, fontWeight: FontWeight.bold, color: textColor),
+            )
+          ],
         ),
-        ),
+      ),
     );
   }
 }
