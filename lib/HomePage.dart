@@ -86,7 +86,7 @@ class _homepageState extends State<homepage> {
                   child: Column(children: [
                 Text("INDIA",
                     style: GoogleFonts.lato(
-                        fontSize: 30, fontWeight: FontWeight.bold)),
+                        fontSize: 30, fontWeight: FontWeight.bold)),SizedBox(height:10),
                 GridView(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
@@ -160,31 +160,29 @@ class StatusPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(decoration: BoxDecoration(
-                      border: Border.all(width: 2, color: Colors.black),
-                      borderRadius: BorderRadius.circular(20)),
-        margin: EdgeInsets.all(5),
-        height: 80,
-        width: width / 2,
-        color: panelColor,
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text(
-        title,
-        style: TextStyle(
-      fontWeight: FontWeight.bold, fontSize: 16, color: textColor),
-        ),SizedBox(height:10),
-        Text(
-        count,
-        style: TextStyle(
-      fontSize: 16, fontWeight: FontWeight.bold, color: textColor),
-        )
-      ],
-        ),
-        ),
-    );
+return Container(
+      decoration: BoxDecoration(
+                    border: Border.all(width: 2, color: Colors.black),
+                    borderRadius: BorderRadius.circular(20),color: panelColor,),
+      margin: EdgeInsets.all(5),
+      height: 80,
+      width: width / 2,
+      
+      child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+      Text(
+      title,
+      style: TextStyle(
+    fontWeight: FontWeight.bold, fontSize: 16, color: textColor),
+      ),SizedBox(height:10),
+      Text(
+      count,
+      style: TextStyle(
+    fontSize: 16, fontWeight: FontWeight.bold, color: textColor),
+      )
+    ],
+      ),
+      );
   }
 }
