@@ -32,18 +32,42 @@ class _homepageState extends State<homepage> {
               ClipPath(
                 clipper: MyClipper(),
                 child: Container(
-                  height: 230,
+                  height: 300,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                          colors: [
-                            Color(0xFF3383CD),
-                            Color(0xFF11249F),
-                          ]),
-                      image: DecorationImage(
-                          image: AssetImage("assets/virus.png"))),
+                    gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [
+                          Color(0xFF3383CD),
+                          Color(0xFF11249F),
+                        ]),
+                    image:
+                        DecorationImage(image: AssetImage("assets/virus.png")),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      SizedBox(height: 20),
+                      Expanded(
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: 230,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.fitWidth,
+                                  //alignment: Alignment.topRight,
+                                  image: AssetImage("assets/person.jpeg"),
+                                ),
+                              ),
+                            )
+                            // Image.asset("assets/person.png"),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               )
             ],
