@@ -32,7 +32,7 @@ class _homepageState extends State<homepage> {
               ClipPath(
                 clipper: MyClipper(),
                 child: Container(
-                  height: 300,
+                  height: 280,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -48,17 +48,26 @@ class _homepageState extends State<homepage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      SizedBox(height: 20),
+                      SizedBox(height: 30),
                       Expanded(
-                        child: Stack(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(30, 30, 30, 30),
+                              child: Text(
+                                'Stay Home,\n    Stay Safe',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 25),
+                              ),
+                            ),
                             Container(
-                              width: 230,
+                              width: 210,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                   fit: BoxFit.fitWidth,
-                                  //alignment: Alignment.topRight,
-                                  image: AssetImage("assets/person.jpeg"),
+                                  alignment: Alignment.topRight,
+                                  image: AssetImage("assets/person1.png"),
                                 ),
                               ),
                             )
@@ -82,9 +91,9 @@ class MyClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     var path = Path();
-    path.lineTo(0, size.height - 50);
+    path.lineTo(0, size.height - 40);
     path.quadraticBezierTo(
-        size.width / 2, size.height, size.width, size.height - 50);
+        size.width / 2, size.height, size.width, size.height - 40);
     path.lineTo(size.width, 0);
     path.close();
     return path;
