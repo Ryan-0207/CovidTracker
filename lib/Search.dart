@@ -48,11 +48,22 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF040F4F),
       appBar: AppBar(
+        backgroundColor: Colors.blue.shade700,
+        centerTitle: true,
         title: Text("Vaccination Centre"),
       ),
       body: vaccinedata == null
-          ? Center(child: CircularProgressIndicator())
+          ? Center(
+              child: Image(
+                image: new AssetImage("assets/loader.gif"),
+                height: MediaQuery.of(context).size.width / 2,
+                width: MediaQuery.of(context).size.width / 2,
+                colorBlendMode: BlendMode.softLight,
+                color: Color(0xff0d69ff).withOpacity(1.0),
+              ),
+            )
           : getBody(),
     );
   }
