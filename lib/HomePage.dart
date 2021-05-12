@@ -7,12 +7,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class homepage extends StatefulWidget {
+class Homepage extends StatefulWidget {
   @override
-  _homepageState createState() => _homepageState();
+  _HomepageState createState() => _HomepageState();
 }
 
-class _homepageState extends State<homepage> {
+class _HomepageState extends State<Homepage> {
   Map indiadata;
   var uri = Uri.parse(
       'https://corona.lmao.ninja/v3/covid-19/countries/India?strict=true');
@@ -38,7 +38,7 @@ class _homepageState extends State<homepage> {
     super.dispose();
   }
 
-  Widget HomePage() {
+  Widget homePage() {
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(
@@ -46,7 +46,7 @@ class _homepageState extends State<homepage> {
             ClipPath(
               clipper: MyClipper(),
               child: Container(
-                height: 280,
+                height: MediaQuery.of(context).size.height / 3,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -61,7 +61,7 @@ class _homepageState extends State<homepage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    SizedBox(height: 30),
+                    SizedBox(height: MediaQuery.of(context).size.height / 45),
                     Expanded(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -70,12 +70,14 @@ class _homepageState extends State<homepage> {
                             padding: EdgeInsets.fromLTRB(30, 30, 30, 30),
                             child: Text(
                               'Stay Home,\n    Stay Safe',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 25),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                           Container(
-                            width: 200,
+                            width: MediaQuery.of(context).size.width / 2,
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 fit: BoxFit.fitHeight,
@@ -91,13 +93,13 @@ class _homepageState extends State<homepage> {
                 ),
               ),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: MediaQuery.of(context).size.height / 45),
             Container(
                 child: Column(children: [
               Text("INDIA",
                   style: GoogleFonts.lato(
                       fontSize: 30, fontWeight: FontWeight.bold)),
-              SizedBox(height: 10),
+              SizedBox(height: MediaQuery.of(context).size.height / 135),
               GridView(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
@@ -140,7 +142,7 @@ class _homepageState extends State<homepage> {
   @override
   Widget build(BuildContext context) {
     final tab = <Widget>[
-      HomePage(),
+      homePage(),
       Vaccine(),
       FAQ(),
     ];
@@ -160,6 +162,7 @@ class _homepageState extends State<homepage> {
       bottomNavigationBar: BottomNavyBar(
         selectedIndex: _currentIndex,
         showElevation: true,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         onItemSelected: (index) => setState(() {
           _currentIndex = index;
           _pageController.animateToPage(index,
