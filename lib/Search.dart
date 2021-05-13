@@ -47,12 +47,18 @@ class _SearchState extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Vaccination Centre"),
-      ),
-      body: vaccinedata == null
-          ? Center(
+    return vaccinedata != null
+        ? Scaffold(
+            backgroundColor: Color(0xFF040F4F),
+            appBar: AppBar(
+              backgroundColor: Colors.blue.shade700,
+              title: Text("Vaccination Centre"),
+            ),
+            body: getBody(),
+          )
+        : Scaffold(
+            backgroundColor: Color(0xFF040F4F),
+            body: Center(
               child: Image(
                 image: new AssetImage("assets/loader.gif"),
                 height: MediaQuery.of(context).size.width / 2,
@@ -60,9 +66,8 @@ class _SearchState extends State<Search> {
                 colorBlendMode: BlendMode.softLight,
                 color: Color(0xff0d69ff).withOpacity(1.0),
               ),
-            )
-          : getBody(),
-    );
+            ),
+          );
   }
 
   Widget getBody() {
@@ -86,14 +91,14 @@ class _SearchState extends State<Search> {
               title: Row(
                 children: <Widget>[
                   Container(
-                    width: 30,
+                    width: 45,
                     height: 60,
                     decoration: BoxDecoration(
                       color: Colors.blue[700],
                       borderRadius: BorderRadius.circular(60 / 2),
                       image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: AssetImage("assets/logo.jpg")),
+                          image: AssetImage("assets/logo1.jpg")),
                     ),
                   ),
                   SizedBox(
