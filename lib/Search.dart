@@ -99,6 +99,7 @@ class _SearchState extends State<Search> {
                       image: DecorationImage(
                           fit: BoxFit.cover,
                           image: AssetImage("assets/logo1.jpeg")),
+
                     ),
                   ),
                   SizedBox(

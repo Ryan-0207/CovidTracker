@@ -17,3 +17,4 @@ class MyClipper extends CustomClipper<Path> {
     return false;
   }
 }
+
