@@ -6,6 +6,6 @@ void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(),
-    home: homepage(),
+    home: Homepage(),
   ));
 }
