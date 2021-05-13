@@ -20,6 +20,9 @@ class _HomepageState extends State<Homepage> {
   int x;
   int _currentIndex = 0;
   PageController _pageController;
+  List recovered = [];
+  List deaths = [];
+  List activecases = [];
 
   getdata() async {
     final uri = Uri.https('api.covid19api.com', '/country/india');
@@ -29,6 +32,33 @@ class _HomepageState extends State<Homepage> {
       x = indiadata.length - 1;
       print(indiadata);
     });
+  }
+
+  List<FlSpot> gatherRecovery() {
+    List<FlSpot> listData = [];
+    for (int i = 100; i < indiadata.length - 1; i++) {
+      listData.add(FlSpot(i * 1.0,
+          (indiadata[i + 1]['Recovered'] - indiadata[i]['Recovered']) * 1.0));
+    }
+    return listData;
+  }
+
+  List<FlSpot> gatherDeaths() {
+    List<FlSpot> listData1 = [];
+    for (int i = 100; i < indiadata.length - 1; i++) {
+      listData1.add(FlSpot(i * 1.0,
+          (indiadata[i + 1]['Deaths'] - indiadata[i]['Deaths']) * 1.0));
+    }
+    return listData1;
+  }
+
+  List<FlSpot> gatherConfirmed() {
+    List<FlSpot> listData2 = [];
+    for (int i = 100; i < indiadata.length - 1; i++) {
+      listData2.add(FlSpot(i * 1.0,
+          (indiadata[i + 1]['Confirmed'] - indiadata[i]['Confirmed']) * 1.0));
+    }
+    return listData2;
   }
 
   @override
@@ -221,65 +251,90 @@ class _HomepageState extends State<Homepage> {
                       padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
                       child: SingleChildScrollView(
                         child: Center(
-                          child: Container(
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 15, 20, 20),
-                              child: LineChart(
-                                LineChartData(
-                                  lineTouchData: LineTouchData(enabled: true),
-                                  lineBarsData: [
-                                    LineChartBarData(
-                                      spots: [
-                                        FlSpot(0, 0),
-                                        FlSpot(3, 8),
-                                        FlSpot(9, 2),
-                                        FlSpot(12, 3),
-                                      ],
-                                      isCurved: true,
-                                      colors: [Colors.green],
-                                      dotData: FlDotData(
-                                        show: false,
-                                      ),
-                                    ),
-                                    LineChartBarData(
-                                      spots: [
-                                        FlSpot(0, 0),
-                                        FlSpot(4, 1),
-                                        FlSpot(5, 1),
-                                        FlSpot(9, 3),
-                                      ],
-                                      isCurved: true,
-                                      colors: [Colors.red],
-                                      dotData: FlDotData(
-                                        show: false,
-                                      ),
-                                    ),
-                                    LineChartBarData(
-                                      spots: [
-                                        FlSpot(0, 0),
-                                        FlSpot(3, 0),
-                                        FlSpot(6, 1),
-                                        FlSpot(8, 3),
-                                      ],
-                                      isCurved: true,
-                                      colors: [Colors.black],
-                                      dotData: FlDotData(
-                                        show: false,
-                                      ),
-                                    )
-                                  ],
+                          child: Column(
+                            children: [
+                              Container(
+                                  child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        10, 15, 20, 20),
+                                    child: LineChart(LineChartData(
+                                        minX: 100,
+                                        minY: 0,
+                                        gridData: FlGridData(show: false),
+                                        titlesData: FlTitlesData(
+                                          show: false,
+                                          leftTitles: SideTitles(
+                                            showTitles: true,
+                                          ),
+                                        ),
+                                        lineTouchData:
+                                            LineTouchData(enabled: true),
+                                        lineBarsData: [
+                                          LineChartBarData(
+                                              spots: gatherRecovery(),
+                                              isCurved: true,
+                                              colors: [Colors.green],
+                                              dotData: FlDotData(
+                                                show: false,
+                                              )),
+                                          LineChartBarData(
+                                              spots: gatherDeaths(),
+                                              isCurved: true,
+                                              colors: [Colors.red],
+                                              dotData: FlDotData(
+                                                show: false,
+                                              )),
+                                          LineChartBarData(
+                                              spots: gatherConfirmed(),
+                                              isCurved: true,
+                                              colors: [Colors.black],
+                                              dotData: FlDotData(
+                                                show: false,
+                                              ))
+                                        ])),
+                                  ),
+                                  height: 400,
+                                  width: MediaQuery.of(context).size.width,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(40),
+                                      color: Colors.blue[100])),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(17, 10, 0, 0),
+                                child: Container(
+                                  alignment: Alignment.topLeft,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('Recovered - Green',
+                                          style: GoogleFonts.lato(
+                                              color: Colors.green,
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.bold)),
+                                      SizedBox(height: 5),
+                                      Text('Deaths - Red',
+                                          style: GoogleFonts.lato(
+                                              color: Colors.red,
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.bold)),
+                                      SizedBox(height: 5),
+                                      Text('Confirmed - Black',
+                                          style: GoogleFonts.lato(
+                                              color: Colors.black,
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.bold)),
+                                      SizedBox(height: 5),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            height: 350,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(40),
-                                color: Colors.blueGrey[50]),
+                            ],
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

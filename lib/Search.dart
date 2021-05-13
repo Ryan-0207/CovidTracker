@@ -98,7 +98,7 @@ class _SearchState extends State<Search> {
                       borderRadius: BorderRadius.circular(60 / 2),
                       image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: AssetImage("assets/logo1.jpg")),
+                          image: AssetImage("assets/logo1.jpeg")),
                     ),
                   ),
                   SizedBox(
