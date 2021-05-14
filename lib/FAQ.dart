@@ -1,18 +1,4 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-
-class FAQ extends StatefulWidget {
-  FAQ({Key key}) : super(key: key);
-
-  @override
-  _FAQState createState() => _FAQState();
-}
-
-class _FAQState extends State<FAQ> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(child: Text("FAQS"));
-=======
 import 'package:covid_tracker_1/datasource.dart';
 
 class FAQ extends StatelessWidget {
@@ -43,6 +29,5 @@ class FAQ extends StatelessWidget {
             }),
       ),
     );
->>>>>>> main
   }
 }
