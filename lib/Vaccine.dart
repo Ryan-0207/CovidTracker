@@ -1,5 +1,5 @@
+import 'package:covid_tracker_1/Search.dart';
 import 'package:covid_tracker_1/datasource.dart';
-import 'package:covid_tracker_1/search.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 
@@ -9,9 +9,7 @@ class Vaccine extends StatefulWidget {
 }
 
 class _VaccineState extends State<Vaccine> {
-  TextEditingController pin = TextEditingController();
   final TextEditingController _pinPutController = TextEditingController();
-  final FocusNode _pinPutFocusNode = FocusNode();
   final BoxDecoration pinPutDecoration = BoxDecoration(
     color: const Color.fromRGBO(43, 46, 66, 1),
     borderRadius: BorderRadius.circular(10.0),
@@ -23,12 +21,8 @@ class _VaccineState extends State<Vaccine> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blue.shade700,
-          centerTitle: true,
-          title: Text("Covid-19 Tracker"),
-        ),
-        body: SingleChildScrollView(
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Column(
             children: [
               Container(
@@ -46,39 +40,43 @@ class _VaccineState extends State<Vaccine> {
               ),
               SizedBox(height: MediaQuery.of(context).size.height / 6),
               Padding(
-                  padding: const EdgeInsets.all(30.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        "Enter the Pin",
-                        // "Check your nearest vaccination centre (Search by pin) ",
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: MediaQuery.of(context).size.height / 45),
-                      PinPut(
-                        fieldsCount: 6,
-                        textStyle: const TextStyle(
-                            fontSize: 25.0, color: Colors.white),
-                        eachFieldWidth: 40.0,
-                        eachFieldHeight: 55.0,
-                        focusNode: _pinPutFocusNode,
-                        controller: _pinPutController,
-                        submittedFieldDecoration: pinPutDecoration,
-                        selectedFieldDecoration: pinPutDecoration,
-                        followingFieldDecoration: pinPutDecoration,
-                        pinAnimationType: PinAnimationType.fade,
-                        onSubmit: (pin) async {
-                          Navigator.of(context).push(MaterialPageRoute(
+                padding: const EdgeInsets.all(30.0),
+                child: Column(
+                  children: [
+                    Text(
+                      "Enter Your Pincode",
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height / 45),
+                    PinPut(
+                      fieldsCount: 6,
+                      textStyle:
+                          const TextStyle(fontSize: 25.0, color: Colors.white),
+                      eachFieldWidth: 40.0,
+                      eachFieldHeight: 55.0,
+                      controller: _pinPutController,
+                      submittedFieldDecoration: pinPutDecoration,
+                      selectedFieldDecoration: pinPutDecoration,
+                      followingFieldDecoration: pinPutDecoration,
+                      pinAnimationType: PinAnimationType.fade,
+                      onSubmit: (pin) async {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(
                               builder: (context) => Search(
-                                    pincode: pin,
-                                  )));
-                        },
-                      ),
-                    ],
-                  ))
+                                pincode: pin,
+                              ),
+                            ))
+                            .then((value) => _pinPutController.clear());
+                      },
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

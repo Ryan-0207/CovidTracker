@@ -1,8 +1,8 @@
+import 'package:covid_tracker_1/HomePage.dart';
 import 'package:flutter/material.dart';
 
-import 'HomePage.dart';
-
 void main() {
+<<<<<<< HEAD
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -10,4 +10,11 @@ void main() {
       home: Homepage(),
     ),
   );
+=======
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    theme: ThemeData(),
+    home: Homepage(),
+  ));
+>>>>>>> main
 }

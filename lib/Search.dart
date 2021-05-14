@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:google_fonts/google_fonts.dart';
 
 class Search extends StatefulWidget {
   final String pincode;
@@ -13,6 +15,7 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   bool isLoading = false;
   var finalDate = '';
+  int x;
   getCurrentDate() {
     var date = new DateTime.now().toString();
 
@@ -35,6 +38,8 @@ class _SearchState extends State<Search> {
 
     setState(() {
       vaccinedata = json.decode(response.body);
+      x = vaccinedata['centers'].length;
+      print(x);
     });
   }
 
@@ -47,15 +52,18 @@ class _SearchState extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFF040F4F),
-      appBar: AppBar(
-        backgroundColor: Colors.blue.shade700,
-        centerTitle: true,
-        title: Text("Vaccination Centre"),
-      ),
-      body: vaccinedata == null
-          ? Center(
+    return vaccinedata != null
+        ? Scaffold(
+            backgroundColor: Color(0xFF040F4F),
+            appBar: AppBar(
+              backgroundColor: Colors.blue.shade700,
+              title: Text("Vaccination Centre"),
+            ),
+            body: getBody(),
+          )
+        : Scaffold(
+            backgroundColor: Color(0xFF040F4F),
+            body: Center(
               child: Image(
                 image: new AssetImage("assets/loader.gif"),
                 height: MediaQuery.of(context).size.width / 2,
@@ -63,85 +71,113 @@ class _SearchState extends State<Search> {
                 colorBlendMode: BlendMode.softLight,
                 color: Color(0xff0d69ff).withOpacity(1.0),
               ),
-            )
-          : getBody(),
-    );
+            ),
+          );
   }
 
   Widget getBody() {
-    return ListView.builder(
-      itemCount: vaccinedata['centers'].length,
-      itemBuilder: (context, index) {
-        var centername = vaccinedata['centers'][index]['name'];
-        var vaccinecount =
-            vaccinedata['centers'][index]['sessions'][0]['available_capacity'];
-        var agelimit =
-            vaccinedata['centers'][index]['sessions'][0]['min_age_limit'];
-        var vaccinename =
-            vaccinedata['centers'][index]['sessions'][0]['vaccine'];
+    return (x == 0)
+        ? Card(
+            color: Color(0xFF040F4F),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  CupertinoIcons.multiply_square,
+                  color: Colors.white,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text('No vaccination centres available in your pincode',
+                    style: GoogleFonts.lato(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold)),
+              ],
+            ),
+          )
+        : ListView.builder(
+            itemCount: x,
+            itemBuilder: (context, index) {
+              var centername = vaccinedata['centers'][index]['name'];
+              var vaccinecount = vaccinedata['centers'][index]['sessions'][0]
+                  ['available_capacity'];
+              var agelimit =
+                  vaccinedata['centers'][index]['sessions'][0]['min_age_limit'];
+              var vaccinename =
+                  vaccinedata['centers'][index]['sessions'][0]['vaccine'];
+              var address = vaccinedata['centers'][index]['address'];
 
-        return Card(
-          elevation: 1.5,
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: ListTile(
-              title: Row(
-                children: <Widget>[
-                  Container(
-                    width: 30,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: Colors.blue[700],
-                      borderRadius: BorderRadius.circular(60 / 2),
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage("assets/vaccine.jpeg")
-                          // NetworkImage(
-                          //     "https://th.bing.com/th/id/OIP.oplhCDn6wLuOR5ARX2Ao5gHaEv?w=188&h=135&c=7&o=5&pid=1.7"),
+              return Card(
+                elevation: 1.5,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: ListTile(
+                    title: Row(
+                      children: <Widget>[
+                        Container(
+                          width: 45,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            color: Colors.blue[700],
+                            borderRadius: BorderRadius.circular(60 / 2),
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: AssetImage("assets/logo1.jpeg")),
                           ),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            SizedBox(
+                                width: MediaQuery.of(context).size.width - 140,
+                                child: Text(
+                                  '$centername',
+                                  style: TextStyle(fontSize: 17),
+                                )),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width - 140,
+                              child: Text(
+                                '$address',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              'Availibilty:$vaccinecount',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              'Eligibilty:$agelimit +',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              'Available Vaccine: $vaccinename',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        )
+                      ],
                     ),
                   ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(
-                          width: MediaQuery.of(context).size.width - 140,
-                          child: Text(
-                            '$centername',
-                            style: TextStyle(fontSize: 17),
-                          )),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        'Availibily=$vaccinecount',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        'Eligibilty:$agelimit +',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        'Available Vaccine: $vaccinename',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
+                ),
+              );
+            },
+          );
   }
 }
