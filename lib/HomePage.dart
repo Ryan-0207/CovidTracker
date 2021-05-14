@@ -133,7 +133,8 @@ class _HomepageState extends State<Homepage> {
                 colorBlendMode: BlendMode.softLight,
                 color: Color(0xff0d69ff).withOpacity(1.0),
               ),
-            ))
+            ),
+          )
         : Scaffold(
             body: SafeArea(
               child: SingleChildScrollView(
