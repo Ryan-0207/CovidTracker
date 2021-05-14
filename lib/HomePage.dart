@@ -83,15 +83,17 @@ class _HomepageState extends State<Homepage> {
     ];
 
     return Scaffold(
-      body: SizedBox.expand(
-        child: PageView(
-          controller: _pageController,
-          onPageChanged: (index) {
-            setState(() => _currentIndex = index);
-          },
-          children: <Widget>[
-            tab[_currentIndex],
-          ],
+      body: Center(
+        child: SizedBox.expand(
+          child: PageView(
+            controller: _pageController,
+            onPageChanged: (index) {
+              setState(() => _currentIndex = index);
+            },
+            children: <Widget>[
+              tab[_currentIndex],
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavyBar(
