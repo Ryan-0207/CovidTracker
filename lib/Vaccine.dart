@@ -1,4 +1,4 @@
-import 'package:covid_tracker_1/search.dart';
+import 'package:covid_tracker_1/Search.dart';
 import 'package:covid_tracker_1/datasource.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pin_put/pin_put.dart';

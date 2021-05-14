@@ -9,9 +9,8 @@ class FAQ extends StatelessWidget {
         backgroundColor: Colors.blue.shade700,
         title: Text('FAQs'),
       ),
-      body: Row(
-        children: [
-          ListView.builder(
+      body: Container(
+        child: ListView.builder(
             itemCount: DataSource.questionAnswers.length,
             itemBuilder: (context, index) {
               return ExpansionTile(
@@ -27,9 +26,7 @@ class FAQ extends StatelessWidget {
                   )
                 ],
               );
-            },
-          ),
-        ],
+            }),
       ),
     );
   }
