@@ -2,13 +2,15 @@ import 'package:covid_tracker_1/FAQ.dart';
 import 'package:covid_tracker_1/MyClipper.dart';
 import 'package:covid_tracker_1/StatusPanel.dart';
 import 'package:covid_tracker_1/Vaccine.dart';
+import 'package:covid_tracker_1/api%20reqs/indiadata_api.dart';
+
+import 'package:covid_tracker_1/models/indiadata.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:provider/provider.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -16,61 +18,76 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  List indiadata;
-  int x;
+  List indiadata2 = [];
+  int y;
   int _currentIndex = 0;
+  IndiaModel finalstats;
   PageController _pageController;
-  List recovered = [];
-  List deaths = [];
-  List activecases = [];
-
-  getdata() async {
-    final uri = Uri.https('api.covid19api.com', '/country/india');
-    http.Response response = await http.get(uri);
-    setState(() {
-      indiadata = json.decode(response.body);
-      x = indiadata.length - 1;
-      print(indiadata);
-    });
-  }
+   List<FlSpot> listData2 = [];
+  List<FlSpot> listData = [];
+  List<FlSpot> listData1 = [];
 
   List<FlSpot> gatherRecovery() {
-    List<FlSpot> listData = [];
-    for (int i = 100; i < indiadata.length - 1; i++) {
-      listData.add(FlSpot(i * 1.0,
-          (indiadata[i + 1]['Recovered'] - indiadata[i]['Recovered']) * 1.0));
+    if (listData.isEmpty) {
+      for (int i = 100; i < indiadata2.length - 1; i++) {
+        IndiaModel indiastats = indiadata2[i];
+        listData.add(FlSpot(i * 1.0, indiastats.recovered * 1.0));
+      }
     }
     return listData;
   }
 
   List<FlSpot> gatherDeaths() {
-    List<FlSpot> listData1 = [];
-    for (int i = 100; i < indiadata.length - 1; i++) {
-      listData1.add(FlSpot(i * 1.0,
-          (indiadata[i + 1]['Deaths'] - indiadata[i]['Deaths']) * 1.0));
+    if (listData1.isEmpty) {
+      for (int i = 100; i < indiadata2.length - 1; i++) {
+        IndiaModel indiastat2 = indiadata2[i];
+         listData1.add(new FlSpot(i * 1.0, indiastat2.deathstoday * 1.0));
+      }
     }
     return listData1;
   }
 
-  List<FlSpot> gatherConfirmed() {
-    List<FlSpot> listData2 = [];
-    for (int i = 100; i < indiadata.length - 1; i++) {
-      listData2.add(FlSpot(i * 1.0,
-          (indiadata[i + 1]['Confirmed'] - indiadata[i]['Confirmed']) * 1.0));
+   List<FlSpot> gatherConfirmed() {
+    // if (listData2.isEmpty) {
+    // print("hi");
+    for (int i = 100; i < indiadata2.length - 1; i++) {
+      IndiaModel indiastat3 = indiadata2[i];
+      listData2.add(new FlSpot(i * 1.0, indiastat3.confirmed * 1.0));
     }
+
     return listData2;
   }
 
   @override
   void initState() {
-    getdata();
+    getdata2();
+
     super.initState();
     _pageController = PageController();
+  }
+
+  getdata2() async {
+    final indiastats1 = Provider.of<Indiadata>(context, listen: false);
+
+    indiadata2 = await indiastats1.getdata();
+    print('Indiadata2 is:${indiadata2[4].activecases}');
+    y = indiadata2.length;
+
+    if (indiadata2 != null) {
+      setState(() {
+        finalstats = indiadata2[y - 1];
+      });
+    }
+    print('y is $y');
+    print(finalstats.activecases);
+    print(finalstats.confirmed);
+    print(finalstats.recovered);
   }
 
   @override
   void dispose() {
     _pageController.dispose();
+
     super.dispose();
   }
 
@@ -123,8 +140,17 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
+  // Widget futurebuilder() {
+  //   return FutureBuilder(
+  //     future: indiadata,
+  //     builder: (context,snapshot){
+
+  //     },
+  //   );
+  // }
+
   Widget homepage() {
-    return indiadata == null
+    return finalstats == null
         ? Scaffold(
             backgroundColor: Color(0xFF040F4F),
             body: Center(
@@ -221,28 +247,25 @@ class _HomepageState extends State<Homepage> {
                                 title: 'NEW CASES',
                                 panelColor: Colors.grey[400],
                                 textColor: Colors.grey[900],
-                                count:
-                                    '${indiadata[x]['Confirmed'] - indiadata[x - 1]['Confirmed']}',
+                                count: '${finalstats.confirmed.toString()}',
                               ),
                               StatusPanel(
                                 title: 'RECOVERED TODAY',
                                 panelColor: Colors.blue[100],
                                 textColor: Colors.blue[900],
-                                count:
-                                    '${indiadata[x]['Recovered'] - indiadata[x - 1]['Recovered']}',
+                                count: '${finalstats.recovered.toString()}',
                               ),
                               StatusPanel(
                                 title: 'ACTIVE',
                                 panelColor: Colors.green[100],
                                 textColor: Colors.green,
-                                count: '${indiadata[x]['Active']}',
+                                count: '${finalstats.activecases.toString()}',
                               ),
                               StatusPanel(
                                 title: 'DEATHS',
                                 panelColor: Colors.red[100],
                                 textColor: Colors.red,
-                                count:
-                                    '${indiadata[x]['Deaths'] - indiadata[x - 1]['Deaths']}',
+                                count: '${finalstats.deathstoday.toString()}',
                               ),
                             ],
                           ),
@@ -260,7 +283,8 @@ class _HomepageState extends State<Homepage> {
                                   child: Padding(
                                     padding: const EdgeInsets.fromLTRB(
                                         10, 15, 20, 20),
-                                    child: LineChart(LineChartData(
+                                    child: LineChart(
+                                      LineChartData(
                                         minX: 100,
                                         minY: 0,
                                         gridData: FlGridData(show: false),
@@ -294,7 +318,9 @@ class _HomepageState extends State<Homepage> {
                                               dotData: FlDotData(
                                                 show: false,
                                               ))
-                                        ])),
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                   height: 400,
                                   width: MediaQuery.of(context).size.width,

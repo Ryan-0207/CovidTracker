@@ -1,7 +1,9 @@
 import 'package:covid_tracker_1/Search.dart';
+import 'package:covid_tracker_1/api%20reqs/vaccine_api.dart';
 import 'package:covid_tracker_1/datasource.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pin_put/pin_put.dart';
+import 'package:provider/provider.dart';
 
 class Vaccine extends StatefulWidget {
   @override
@@ -63,11 +65,21 @@ class _VaccineState extends State<Vaccine> {
                       onSubmit: (pin) async {
                         Navigator.of(context)
                             .push(MaterialPageRoute(
-                              builder: (context) => Search(
-                                pincode: pin,
-                              ),
-                            ))
-                            .then((value) => _pinPutController.clear());
+                          builder: (context) => Search(
+                            pincode: pin,
+                          ),
+                        ))
+                            .then((value) {
+                          _pinPutController.clear();
+                          final vaccinelist1 = Provider.of<Vaccinecentre>(
+                              context,
+                              listen: false);
+                          setState(() {
+                            vaccinelist1.vaccinelist.clear();
+                            print("cleared");
+                            print(vaccinelist1.vaccinelist);
+                          });
+                        });
                       },
                     ),
                   ],
